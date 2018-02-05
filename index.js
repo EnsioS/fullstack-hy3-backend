@@ -7,22 +7,22 @@ app.use(bodyParser.json())
 let persons = [
   {
     name: "Arto Hellas",
-    numder: "040-123456",  
+    number: "040-123456",  
     id: 1,
   },
   {
     name: "Martti Tienari",
-    numder: "040-123456",        
+    number: "040-123456",        
     id: 2,
   },
   {
     name: "Arto Järvinen",
-    numder: "040-123456",        
+    number: "040-123456",        
     id: 3,
   },
   {
     name: "Lea Kutvonen",
-    numder: "040-123456",        
+    number: "040-123456",        
     id: 4,
   }  
 ]
@@ -51,10 +51,19 @@ app.get('/api/persons/:id', (request, response) => {
 const generateId = () => Math.floor(Math.random()*1000000*persons.length)
 
 app.post('/api/persons', (request, response) => {
-  const person = request.body
-  person.id = generateId()
+  const body = request.body
+  
+  if (body.name === undefined || body.number === undefined) {
+    return response.status(400).json({ error: 'name or number missing' })
+  } else if (persons.find(person => person.name === body.name)) {
+    return response.status(400).json({ error: 'name must be unique' })
+  }
 
-  console.log(person.id)
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId()
+  }
 
   persons = persons.concat(person)
 
