@@ -1,0 +1,27 @@
+{
+  "name": "puhelinluettelo-backend",
+  "version": "1.0.0",
+  "description": "Helsingin yliopiston kurssin full-stack websovelluskehitys osan 3 backend-toiminnallisuuden repositorio.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EnsioS/fullstack-hy3-backend.git"
+  },
+  "author": "Ensio Suonperä",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EnsioS/fullstack-hy3-backend/issues"
+  },
+  "homepage": "https://github.com/EnsioS/fullstack-hy3-backend#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.12"
+  }
+}
