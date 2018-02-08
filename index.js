@@ -11,9 +11,13 @@ app.use(bodyParser.json())
 app.use(morgan('tiny'))
 
 app.get('/info', (request, response) => {
-    const info = `<p> puhelinluettossa ${persons.length} henkilön tiedot </p>
-                  <p>${new Date()}</p>`
-    response.send(info)    
+  Person
+    .find({})
+    .then(persons => {
+      const info = `<p> puhelinluettossa ${persons.length} henkilön tiedot </p>
+                    <p>${new Date()}</p>`
+      response.send(info)    
+    })
 })
 
 app.get('/api/persons', (request, response) => {
@@ -29,14 +33,15 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
-
-  if ( person ) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+    Person
+      .findById(request.params.id)
+      .then(person => {
+        response.json(Person.format(person))
+      })
+      .catch(error => {
+        console.log(error)
+        response.status(400).send({ error: 'malformatted id' })
+      })
 })
 
 app.post('/api/persons', (request, response) => {
@@ -51,7 +56,7 @@ app.post('/api/persons', (request, response) => {
     number: body.number
   })
 
-  person
+  Person
     .save()
     .then(savedPerson => {
       response.json(Person.format(savedPerson))
