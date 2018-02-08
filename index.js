@@ -16,7 +16,7 @@ app.get('/info', (request, response) => {
     .then(persons => {
       const info = `<p> puhelinluettossa ${persons.length} henkilön tiedot </p>
                     <p>${new Date()}</p>`
-      response.send(info)    
+      response.send(info)
     })
 })
 
@@ -33,20 +33,20 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    Person
-      .findById(request.params.id)
-      .then(person => {
-        response.json(Person.format(person))
-      })
-      .catch(error => {
-        console.log(error)
-        response.status(400).send({ error: 'malformatted id' })
-      })
+  Person
+    .findById(request.params.id)
+    .then(person => {
+      response.json(Person.format(person))
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(400).send({ error: 'malformatted id' })
+    })
 })
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
-  
+
   if (body.name === undefined || body.number === undefined) {
     return response.status(400).json({ error: 'name or number missing' })
   }
@@ -65,7 +65,7 @@ app.post('/api/persons', (request, response) => {
       console.log(error)
       response.status(404).end()
     })
-})  
+})
 
 app.put('/api/persons/:id', (request, response) => {
   const body = request.body
@@ -76,7 +76,7 @@ app.put('/api/persons/:id', (request, response) => {
   }
 
   Person
-    .findByIdAndUpdate(request.params.id, person, { new: true })  
+    .findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updatedPerson => {
       response.json(Person.format(updatedPerson))
     })
@@ -93,11 +93,12 @@ app.delete('/api/persons/:id', (request, response) => {
       response.status(204).end()
     })
     .catch(error => {
-      response.status(400).send({ error: 'malformatted id'})
+      console.log(error)
+      response.status(400).send({ error: 'malformatted id' })
     })
 })
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`)
 })
