@@ -3,34 +3,35 @@ const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const Person = require('./models/person')
 
 app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 app.use(morgan('tiny'))
 
-let persons = [
-  {
-    name: "Arto Hellas",
-    number: "040-123456",  
-    id: 1,
-  },
-  {
-    name: "Martti Tienari",
-    number: "040-123456",        
-    id: 2,
-  },
-  {
-    name: "Arto Järvinen",
-    number: "040-123456",        
-    id: 3,
-  },
-  {
-    name: "Lea Kutvonen",
-    number: "040-123456",        
-    id: 4,
-  }  
-]
+// let persons = [
+//   {
+//     name: "Arto Hellas",
+//     number: "040-123456",  
+//     id: 1,
+//   },
+//   {
+//     name: "Martti Tienari",
+//     number: "040-123456",        
+//     id: 2,
+//   },
+//   {
+//     name: "Arto Järvinen",
+//     number: "040-123456",        
+//     id: 3,
+//   },
+//   {
+//     name: "Lea Kutvonen",
+//     number: "040-123456",        
+//     id: 4,
+//   }  
+// ]
 
 app.get('/info', (request, response) => {
     const info = `<p> puhelinluettossa ${persons.length} henkilön tiedot </p>
@@ -39,7 +40,11 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person
+    .find({})
+    .then(persons => {
+      response.json(persons.map(Person.format))
+    })
 })
 
 app.get('/api/persons/:id', (request, response) => {
